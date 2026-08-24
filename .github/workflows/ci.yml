@@ -1,16 +1,6 @@
-name: CI Pipeline
-
-# Trigger workflow on push or pull request to main branch
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -22,6 +12,8 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./my-app   # <-- adjust if needed
 
       - name: Run tests
         run: npm test
+        working-directory: ./my-app
