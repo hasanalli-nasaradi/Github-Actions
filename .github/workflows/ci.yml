@@ -1,19 +1,28 @@
+name: My First GitHub Actions
+
+on: [push]
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
 
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./my-app   # <-- adjust if needed
-
-      - name: Run tests
-        run: npm test
-        working-directory: ./my-app
+    - name: Run tests
+      run: |
+        cd src
+        python -m pytest addition.py
