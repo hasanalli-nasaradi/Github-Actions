@@ -1,22 +1,16 @@
-name: My First GitHub Actions
-
-on:
-  push:
-    branches: [ "main" ]
-
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        python-version: [3.10, 3.11]
+        python-version: [3.10, 3.11, 3.12]   # supported versions
 
     steps:
       - uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -27,6 +21,4 @@ jobs:
           pip install pytest
 
       - name: Run tests
-        run: |
-          cd src
-          python - pytest addition.py
+        run: pytest
